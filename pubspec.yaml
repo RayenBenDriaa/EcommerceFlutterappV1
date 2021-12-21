@@ -38,6 +38,7 @@ dependencies:
   http: ^0.13.4
   flutter_svg : ^0.17.4
   objectid: 2.0.0
+  responsive_framework: ^0.1.5
 
 
 dev_dependencies:
