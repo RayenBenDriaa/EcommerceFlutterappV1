@@ -69,7 +69,7 @@ class _EdituserState extends State<Edituser> {
                                             )
                                         ),Positioned(
                                             top: 20,
-                                            top: 20,
+
                                             left: 22,
                                             child: Container(
                                                 width: 32,
