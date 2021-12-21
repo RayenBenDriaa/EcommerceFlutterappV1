@@ -5,7 +5,19 @@ const UserSchema = mongoose.Schema({
     type: String,
     required: true
   },
+  fullname: {
+    type: String,
+    required: true
+  },
   email: {
+    type: String,
+    required: true
+  },
+  telephone: {
+    type: Number,
+    required: true
+  },
+  adresse: {
     type: String,
     required: true
   },
@@ -13,14 +25,18 @@ const UserSchema = mongoose.Schema({
     type: String,
     required: true
   },
+  pdp: {
+    type: String,
+    required: false
+  },
+  date_naissance:{
+    type: String, 
+    required: true
+  },
   createdAt: {
     type: Date,
     default: Date.now()
-  },
-  test: {
-    type: String,
-    required: true
-  }
+  } 
 });
 
 // export model user with UserSchema
