@@ -22,8 +22,8 @@ class MyApp extends StatelessWidget {
               breakpoints: [
                 ResponsiveBreakpoint.autoScale(360, name: MOBILE),
                 ResponsiveBreakpoint.resize(440, name: MOBILE),
-                ResponsiveBreakpoint.resize(850, name: TABLET),
-                ResponsiveBreakpoint.resize(1080, name: DESKTOP),
+                ResponsiveBreakpoint.resize(350, name: TABLET),
+                ResponsiveBreakpoint.resize(350, name: DESKTOP),
               ],
             ),
         title: 'Ecommerce',
