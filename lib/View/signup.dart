@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 import '../NetworkHandler.dart';
 
 class Signup extends StatefulWidget {
-  const Signup({Key? key}) : super(key: key);
+  const Signup({Key key}) : super(key: key);
 
   @override
   _SignupState createState() => _SignupState();
@@ -31,12 +31,12 @@ class _SignupState extends State<Signup> {
   final TextEditingController _verifpassword = TextEditingController();
 
   // -------verif age
-  int? age;
+  int age;
   DateTime date = DateTime.now();
 
   // -------verif unicite email et username
-  String? errorText;
-  String? errorTextEmail;
+  String errorText;
+  String errorTextEmail;
   bool validate = false;
   bool validateEmail = false;
 
@@ -158,7 +158,7 @@ class _SignupState extends State<Signup> {
                           BorderSide(color: HexColor("#FF8000"), width: 1.0)),
                 ),
                 validator: (value) {
-                  if (value!.isEmpty) {
+                  if (value.isEmpty) {
                     return "Veuillez renseigner votre nom et prénom.";
                   } else {
                     return null;
@@ -233,7 +233,7 @@ class _SignupState extends State<Signup> {
                           BorderSide(color: HexColor("#FF8000"), width: 1.0)),
                 ),
                 validator: (value) {
-                  if (value!.isEmpty) {
+                  if (value.isEmpty) {
                     return "Veuillez renseigner l'adresse de votre domicile.";
                   } else {
                     return null;
@@ -258,7 +258,7 @@ class _SignupState extends State<Signup> {
                           BorderSide(color: HexColor("#FF8000"), width: 1.0)),
                 ),
                 validator: (value) {
-                  if (value!.isEmpty) {
+                  if (value.isEmpty) {
                     return "Veuillez renseigner votre numéro de téléphone.";
                   } else if (value.replaceAll(' ', '').length != 8) {
                     return "Veuillez renseigner un numéro de téléphone valide";
@@ -321,7 +321,7 @@ class _SignupState extends State<Signup> {
                 ),
                 readOnly: true,
                 onTap: () async {
-                  DateTime? pickedDate = await showDatePicker(
+                  DateTime pickedDate = await showDatePicker(
                     context: context,
                     initialDate: DateTime.now(),
                     firstDate: DateTime(1900),
@@ -341,12 +341,12 @@ class _SignupState extends State<Signup> {
                   }
                 },
                 validator: (value) {
-                  if (value!.isEmpty) {
+                  if (value.isEmpty) {
                     return "Veuillez renseigner votre date de naissance.";
                   } else {
                     age = calculateAge(date);
                     print(age);
-                    if (age! < 18) {
+                    if (age < 18) {
                       return "Vous devez être agé de minimum 18ans pour créer un compte";
                     } else {
                       return null;
@@ -382,7 +382,7 @@ class _SignupState extends State<Signup> {
                           BorderSide(color: HexColor("#FF8000"), width: 1.0)),
                 ),
                 validator: (value) {
-                  if (value!.isEmpty) {
+                  if (value.isEmpty) {
                     return "Veuillez renseigner votre mot de passe.";
                   } else if (value.length < 8) {
                     return "Votre mot de passe doit contenir au moins 8 caractères";
@@ -417,7 +417,7 @@ class _SignupState extends State<Signup> {
                           BorderSide(color: HexColor("#FF8000"), width: 1.0)),
                 ),
                 validator: (value) {
-                  if (value!.isEmpty) {
+                  if (value.isEmpty) {
                     return "Veuillez renseigner votre mot de passe.";
                   } else if (value.length < 8) {
                     return "Votre mot de passe doit contenir au moins 8 caractères";
@@ -470,7 +470,7 @@ class _SignupState extends State<Signup> {
                         // print("_password : " + _password.text);
 
                         FocusScope.of(context).requestFocus(FocusNode());
-                        if (_formKey.currentState!.validate() &&
+                        if (_formKey.currentState.validate() &&
                             validate &&
                             validateEmail) {
                           Map<String, String> data = {

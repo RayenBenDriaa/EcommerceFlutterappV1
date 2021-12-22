@@ -7,19 +7,19 @@ import 'package:http/http.dart' as http;
 import '../NetworkHandler.dart';
 
 class Edituser extends StatefulWidget {
-  const Edituser({Key? key}) : super(key: key);
+  const Edituser({Key key}) : super(key: key);
 
   @override
   State<Edituser> createState() => _EdituserState();
 }
 
 class _EdituserState extends State<Edituser> {
-  late String? _nom;
-  late String? _email;
-  late String? _password;
-  late String? _prenom;
-  late String? _numtel;
-  late String? _repeatPassword;
+   String _nom;
+   String _email;
+   String _password;
+   String _prenom;
+   String _numtel;
+   String _repeatPassword;
   final GlobalKey<FormState> _keyForm = GlobalKey<FormState>();
   final TextEditingController _pass = TextEditingController();
   final TextEditingController _confirmPass = TextEditingController();
@@ -87,10 +87,10 @@ class _EdituserState extends State<Edituser> {
                             labelText: "Email",
                             fillColor: Colors.white,
                           ),
-                          onSaved: (String? value) {
+                          onSaved: (String value) {
                             _email = value;
                           },
-                          validator: (String? value) {
+                          validator: (String value) {
                             String pattern =
                                 r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
                             if (value == null || value.isEmpty) {
@@ -110,7 +110,7 @@ class _EdituserState extends State<Edituser> {
                           decoration: const InputDecoration(
                               border: OutlineInputBorder(),
                               labelText: "Full name"),
-                          onSaved: (String? value) {
+                          onSaved: (String value) {
                             _nom = value;
                           },
                           validator: (value) {
@@ -132,7 +132,7 @@ class _EdituserState extends State<Edituser> {
                           decoration: const InputDecoration(
                               border: OutlineInputBorder(),
                               labelText: "Mot de passe"),
-                          onSaved: (String? value) {
+                          onSaved: (String value) {
                             _password = value;
                           },
                           validator: (value) {
@@ -154,7 +154,7 @@ class _EdituserState extends State<Edituser> {
                           decoration: const InputDecoration(
                               border: OutlineInputBorder(),
                               labelText: "Repeter le mot de passe"),
-                          onSaved: (String? value) {
+                          onSaved: (String value) {
                             _repeatPassword = value;
                           },
                           validator: (value) {
@@ -177,7 +177,7 @@ class _EdituserState extends State<Edituser> {
                             width: double.infinity,
                             child: ElevatedButton(
                               onPressed: () async {
-                                _keyForm.currentState!.save();
+                                _keyForm.currentState.save();
 
                                 Map<String, String> userData = {
                                   "username": "slim",
