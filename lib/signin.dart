@@ -5,15 +5,15 @@ import 'NetworkHandler.dart';
 import "View/edituser.dart";
 
 class Signin extends StatefulWidget {
-  const Signin({Key? key}) : super(key: key);
+  const Signin({Key key}) : super(key: key);
 
   @override
   State<Signin> createState() => _SigninState();
 }
 
 class _SigninState extends State<Signin> {
-  late String? _email = "";
-  late String? _password = "";
+   String _email = "";
+   String _password = "";
 
   final GlobalKey<FormState> _keyForm = GlobalKey<FormState>();
   NetworkHandler networkHandler = NetworkHandler();
@@ -23,8 +23,8 @@ class _SigninState extends State<Signin> {
   final String _baseUrl = "http://192.168.1.2:4000";
   @override
   Widget _buildLogoButton({
-    required String image,
-    required VoidCallback onPressed,
+     String image,
+     VoidCallback onPressed,
   }) {
     return FloatingActionButton(
       heroTag: "image",
@@ -137,10 +137,10 @@ class _SigninState extends State<Signin> {
                         BorderSide(color: Color(0xFFEF6C00), width: 2.0),
                   ),
                 ),
-                onSaved: (String? value) {
+                onSaved: (String value) {
                   _email = value;
                 },
-                validator: (String? value) {
+                validator: (String value) {
                   String pattern =
                       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
                   if (value == null || value.isEmpty) {
@@ -167,10 +167,10 @@ class _SigninState extends State<Signin> {
                         BorderSide(color: Color(0xFFEF6C00), width: 2.0),
                   ),
                 ),
-                onSaved: (String? value) {
+                onSaved: (String value) {
                   _password = value;
                 },
-                validator: (String? value) {
+                validator: (String value) {
                   if (value == null || value.isEmpty) {
                     return "Le mot de passe ne doit pas etre vide";
                   } else if (value.length < 4) {
@@ -196,8 +196,8 @@ class _SigninState extends State<Signin> {
                     elevation: 10.0, //buttons Material shadow
                   ),
                   onPressed: () async {
-                    if (_keyForm.currentState!.validate()) {
-                      _keyForm.currentState!.save();
+                    if (_keyForm.currentState.validate()) {
+                      _keyForm.currentState.save();
 
                       Map<String, String> userData = {
                         "email": _email2.text,
@@ -298,16 +298,20 @@ class _SigninState extends State<Signin> {
                         style: TextStyle(
                             fontWeight: FontWeight.w900, color: Colors.orange)),
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const Edituser()),
-                      );
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return const Edituser();
-                      }));
-                      Navigator.pushNamed(context, "/editUser");
+                      Future.delayed(Duration.zero, () async {
+                        await Future.delayed(const Duration(milliseconds: 100));
+                        Navigator.pushNamed(context, "/login");
+                      });
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //       builder: (context) => const Edituser()),
+                      // );
+                      // Navigator.push(context,
+                      //     MaterialPageRoute(builder: (context) {
+                      //   return const Edituser();
+                      // }));
+                      // Navigator.pushNamed(context, "/editUser");
                     },
                   )
                 ],
