@@ -32,7 +32,6 @@ const {UpdateUser } = require("../Controllers/UserController");
       min: 8
     }), 
     check("date_naissance", "Entrez une date de naissance valide").not().isEmpty(),
-
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -42,7 +41,7 @@ const {UpdateUser } = require("../Controllers/UserController");
       });
     }
 
-    const { username, fullname, email, telephone, adresse, pdp, password, date_naissance } = req.body;
+    const { username, fullname, email, telephone, adresse, pdp, password, date_naissance, role } = req.body;
     try {
       let user = await User.findOne({
         email
@@ -67,7 +66,8 @@ const {UpdateUser } = require("../Controllers/UserController");
         adresse,
         pdp,
         date_naissance,
-        password
+        password, 
+        role
       });
 
       const salt = await bcrypt.genSalt(10);

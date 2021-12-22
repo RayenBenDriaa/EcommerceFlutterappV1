@@ -31,6 +31,19 @@ class NetworkHandler {
     log.d(response.statusCode);
   }
 
+  Future<dynamic> put(String url, Map<String, String> body) async {
+    url = formatter(url);
+    var response = await http.put(Uri.parse(url),
+        headers: {"Content-Type": "application/json; charset=UTF-8"},
+        body: json.encode(body));
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      log.i(response.body);
+      return response;
+    }
+    log.d(response.body);
+    log.d(response.statusCode);
+  }
+
   String formatter(String url) {
     return baseUrl + url;
   }

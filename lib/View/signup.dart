@@ -504,7 +504,7 @@ class _SignupState extends State<Signup> {
                   Text(
                     "Have an account ?",
                     style: TextStyle(
-                        fontSize: 12,
+                        fontSize: 13,
                         color: HexColor("#9098B1"),
                         fontWeight: FontWeight.w900),
                   ),
@@ -516,10 +516,10 @@ class _SignupState extends State<Signup> {
                         style: TextStyle(
                             fontWeight: FontWeight.w900,
                             color: HexColor("#FF8000"),
-                            fontSize: 12)),
+                            fontSize: 13)),
                     onTap: () {
                       FocusScope.of(context).requestFocus(FocusNode());
-                      print("Sign In");
+                      Navigator.pushReplacementNamed(context, "/signin");
                     },
                   )
                 ],

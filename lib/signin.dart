@@ -131,7 +131,7 @@ class _SigninState extends State<Signin> {
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: 'Enter your Email',
-                  prefixIcon: Icon(Icons.email, color: Colors.grey),
+                  prefixIcon: Icon(Icons.email),
                   focusedBorder: OutlineInputBorder(
                     borderSide:
                         BorderSide(color: Color(0xFFEF6C00), width: 2.0),
@@ -161,7 +161,7 @@ class _SigninState extends State<Signin> {
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: 'Enter your Password',
-                  prefixIcon: Icon(Icons.lock, color: Colors.grey),
+                  prefixIcon: Icon(Icons.lock),
                   focusedBorder: OutlineInputBorder(
                     borderSide:
                         BorderSide(color: Color(0xFFEF6C00), width: 2.0),

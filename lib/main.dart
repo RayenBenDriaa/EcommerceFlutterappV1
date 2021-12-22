@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:internal/View/signup.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 import 'View/edituser.dart';
 import 'signin.dart';
@@ -31,17 +31,24 @@ class MyApp extends StatelessWidget {
       ),
       title: 'Ecommerce',
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        // CUSTOMIZE showDatePicker Colors
+        colorScheme: ColorScheme.light(primary: HexColor("#FF8000")),
+        buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
+      ),
       routes: {
         "/": (BuildContext context) {
+          return const Signin();
+        },
+        "/signin": (BuildContext context) {
           return const Signin();
         },
         "/signup": (BuildContext context) {
           return const Signup();
         },
-        // "/editUser": (BuildContext context) {
-        //   return const Edituser();
-        // },
-        '/editUser': (context) => const Edituser(),
+        "/editUser": (BuildContext context) {
+          return const Edituser();
+        },
       },
     );
   }
