@@ -12,26 +12,6 @@ class ApiService {
   ResponseModel response = ResponseModel();
 
 
-  //  add new user
-  Future<ResponseModel> saveUser(User user) async {
-    response = null;
-    try {
-      requestState.makeStateBusy();
-
-      final request = await http.post(Uri.parse(AppConstants.API_URL+AppConstants.ADD_NEW_USER),
-          headers: AppConstants.HEADERS,body: jsonEncode(user.toJson()));
-      if (request.statusCode == 200) {
-        response = ResponseModel.fromJson(json.decode(request.body));
-      } else {
-        response = ResponseModel.fromJson(json.decode(request.body));
-      }
-    } catch (e) {
-      ResponseModel();
-    }
-
-    requestState.makeStateNormal();
-    return response;
-  }
 
   //  make a request to get new password
   Future<ResponseModel> forgetPassword(String mail) async {
@@ -52,24 +32,6 @@ class ApiService {
 
     requestState.makeStateNormal();
 
-    return response;
-  }
-
-  //  try to check the user if exist or not
-  Future<ResponseModel> checkUser(User user) async {
-    response = null;
-    try {
-      final request = await http.post(Uri.parse(AppConstants.API_URL+AppConstants.CHECK_USER),body: jsonEncode(user.toJson()),headers: AppConstants.HEADERS);
-      if(request.statusCode == 200) {
-        response = ResponseModel.fromJson(json.decode(request.body));
-        print(request.body);
-      } else {
-        response = ResponseModel.fromJson(json.decode(request.body));
-      }
-
-    } catch (e) {
-      return ResponseModel();
-    }
     return response;
   }
 
