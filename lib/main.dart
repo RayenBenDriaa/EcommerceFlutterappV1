@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:internal/View/login_page.dart';
 import 'package:internal/core/states/request_state.dart';
@@ -9,6 +11,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'View/edituser.dart';
 import 'signin.dart';
 import 'View/signup.dart';
+import 'View/parametres.dart';
 
 void main() {
   setupLocator();
@@ -28,10 +31,10 @@ class MyApp extends StatelessWidget {
         minWidth: 480,
         defaultName: MOBILE,
         // breakpoints: [
-        //ResponsiveBreakpoint.autoScale(360, name: MOBILE),
-        //ResponsiveBreakpoint.resize(440, name: MOBILE),
-        //ResponsiveBreakpoint.resize(350, name: TABLET),
-        //ResponsiveBreakpoint.resize(350, name: DESKTOP),
+        //   ResponsiveBreakpoint.autoScale(360, name: MOBILE),
+        //   ResponsiveBreakpoint.resize(440, name: MOBILE),
+        //   ResponsiveBreakpoint.resize(350, name: TABLET),
+        //   ResponsiveBreakpoint.resize(350, name: DESKTOP),
         // ],
       ),
       title: 'Ecommerce',
@@ -41,9 +44,10 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.light(primary: HexColor("#FF8000")),
         buttonTheme: const ButtonThemeData(textTheme: ButtonTextTheme.primary),
       ),
+      // supportedLocales: ln10.all,
       routes: {
         "/": (BuildContext context) {
-          return const Signin();
+          return const Parametres();
         },
         "/signin": (BuildContext context) {
           return const Signin();
@@ -53,6 +57,9 @@ class MyApp extends StatelessWidget {
         },
         "/editUser": (BuildContext context) {
           return const Edituser();
+        },
+        "/parametres": (BuildContext context) {
+          return const Parametres();
         },
         "/login": (BuildContext context) {
           return MultiProvider(

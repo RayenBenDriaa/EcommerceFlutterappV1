@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'NetworkHandler.dart';
 import "View/edituser.dart";
+import 'View/parametres.dart';
 
 class Signin extends StatefulWidget {
   const Signin({Key key}) : super(key: key);
@@ -19,6 +20,8 @@ class _SigninState extends State<Signin> {
   NetworkHandler networkHandler = NetworkHandler();
   final TextEditingController _email2 = TextEditingController();
   final TextEditingController _password2 = TextEditingController();
+
+  int testBD;
 
   final String _baseUrl = "http://192.168.1.2:4000";
   @override
