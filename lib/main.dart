@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:internal/View/login_page.dart';
+import 'package:internal/View/profile.dart';
 import 'package:internal/core/states/request_state.dart';
 import 'package:internal/locator.dart';
+import 'package:internal/shared/splash_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -43,7 +45,7 @@ class MyApp extends StatelessWidget {
       ),
       routes: {
         "/": (BuildContext context) {
-          return const Signin();
+          return const SpalshScreen();
         },
         "/signin": (BuildContext context) {
           return const Signin();
@@ -53,6 +55,9 @@ class MyApp extends StatelessWidget {
         },
         "/editUser": (BuildContext context) {
           return const Edituser();
+        },
+        "/profile": (BuildContext context) {
+          return  Profile();
         },
         "/login": (BuildContext context) {
           return MultiProvider(
