@@ -1,9 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 import 'dart:math' as math;
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import '../NetworkHandler.dart';
 
 class Edituser extends StatefulWidget {
@@ -29,11 +32,17 @@ class _EdituserState extends State<Edituser> {
   final TextEditingController _email2 = TextEditingController();
   final TextEditingController _prenom2 = TextEditingController();
   final TextEditingController _numtel2 = TextEditingController();
+   final TextEditingController birthInput = TextEditingController();
+  final TextEditingController _tel = TextEditingController();
+  final maskFormatter = MaskTextInputFormatter(mask: '## ### ###');
 
   final String _baseUrl = "10.0.2.2:4000";
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    int? age;
+    DateTime date = DateTime.now();
     // Figma Flutter Generator PrincipalctaWidget - INSTANCE
     return Container(
       decoration: const BoxDecoration(),
@@ -43,7 +52,7 @@ class _EdituserState extends State<Edituser> {
               key: _keyForm,
               child: ListView(children: [
                 Container(
-                    margin: EdgeInsets.fromLTRB(15, 100, 15, 0),
+                    margin: EdgeInsets.fromLTRB(15, 40, 15, 0),
                     child: Column(children: [
                       Container(
                           width: 72,
@@ -83,10 +92,11 @@ class _EdituserState extends State<Edituser> {
                           controller: _email2,
                           keyboardType: TextInputType.emailAddress,
                           decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: "Email",
+                            border: const OutlineInputBorder(),
+                            hintText: 'Modifier votre email',
+                            prefixIcon: const Icon(Icons.email),
                             fillColor: Colors.white,
-                          ),
+                            ),
                           onSaved: (String? value) {
                             _email = value;
                           },
@@ -103,21 +113,50 @@ class _EdituserState extends State<Edituser> {
                           },
                         ),
                       ),
-                      Container(
-                        margin: const EdgeInsets.fromLTRB(10, 0, 10, 20),
+                     Container(
+              width: width,
+                        height: 65,
+                        margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
                         child: TextFormField(
-                          controller: _nom2,
-                          decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: "Full name"),
-                          onSaved: (String? value) {
-                            _nom = value;
-                          },
+                          controller: _prenom2,
+                          decoration: InputDecoration(
+                            border: const OutlineInputBorder(),
+                            hintText: 'Modifier votre Nom et Prénom',
+                            prefixIcon: const Icon(Icons.account_box_sharp),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: HexColor("#FF8000"), width: 1.0)),
+                          ),
                           validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return "le nom ne doit pas etre vide";
-                            } else if (value.length < 2) {
-                              return "le nom doit avoir au moins 2 caractères";
+                            if (value!.isEmpty) {
+                              return "Veuillez renseigner votre nom et prénom.";
+                            } else {
+                              return null;
+                            }
+                          },
+                        ),
+                      ),
+                      Container(
+                        width: width,
+                        height: 65,
+                        margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
+                        child: TextFormField(
+                          controller: _tel,
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [maskFormatter],
+                          decoration: InputDecoration(
+                            border: const OutlineInputBorder(),
+                            hintText: 'Entrez votre numéro de téléphone',
+                            prefixIcon: const Icon(Icons.phone),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: HexColor("#FF8000"), width: 1.0)),
+                          ),
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return "Veuillez renseigner votre numéro de téléphone.";
+                            } else if (value.replaceAll(' ', '').length != 8) {
+                              return "Veuillez renseigner un numéro de téléphone valide";
                             } else {
                               return null;
                             }
@@ -126,12 +165,70 @@ class _EdituserState extends State<Edituser> {
                       ),
                       Container(
                         margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
+                        width: width,
+                        height: 65,
+                        child: TextFormField(
+                          controller: birthInput,
+                          decoration: InputDecoration(
+                            labelText: "Modifier votre date de naissance",
+                            border: const OutlineInputBorder(),
+                            prefixIcon: const Icon(Icons.cake),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: HexColor("#FF8000"), width: 1.0)),
+                          ),
+                          readOnly: true,
+                          onTap: () async {
+                            DateTime? pickedDate = await showDatePicker(
+                              context: context,
+                              initialDate: DateTime.now(),
+                              firstDate: DateTime(1900),
+                              lastDate: DateTime.now(),
+                            );
+                            if (pickedDate != null) {
+                              date = pickedDate;
+                              String formattedDate =
+                                  DateFormat('dd/MM/yyyy').format(pickedDate);
+                              // _naissance = formattedDate;
+                              setState(() {
+                                birthInput.text = formattedDate;
+                              });
+                              print(birthInput.text);
+                            } else {
+                              print("Pas de date ");
+                            }
+                          },
+                          validator: (value) {
+                  if (value!.isEmpty) {
+                              return "Veuillez renseigner votre date de naissance.";
+                            } else {
+                              age = calculateAge(date);
+                              print(age);
+                              if (age! < 18) {
+                                return "Vous devez être agé de minimum 18ans pour créer un compte";
+                              } else {
+                                return null;
+                              }
+                  }
+                            // return null;
+                            // }
+                },
+                        ),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
                         child: TextFormField(
                           controller: _pass,
                           obscureText: true,
-                          decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: "Mot de passe"),
+                          decoration: InputDecoration(
+                            border: const OutlineInputBorder(),
+                            labelText: "Modifier Mot de passe",
+                            prefixIcon: const Icon(Icons.lock),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: HexColor("#FF8000"), width: 1.0)),
+                          ),
+                              
                           onSaved: (String? value) {
                             _password = value;
                           },
@@ -151,9 +248,14 @@ class _EdituserState extends State<Edituser> {
                         child: TextFormField(
                           controller: _confirmPass,
                           obscureText: true,
-                          decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: "Repeter le mot de passe"),
+                          decoration: InputDecoration(
+                            border: const OutlineInputBorder(),
+                            labelText: "Repeter le mot de passe",
+                            prefixIcon: const Icon(Icons.lock),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: HexColor("#FF8000"), width: 1.0)),
+                          ),
                           onSaved: (String? value) {
                             _repeatPassword = value;
                           },
@@ -180,8 +282,11 @@ class _EdituserState extends State<Edituser> {
                                 _keyForm.currentState!.save();
 
                                 Map<String, String> userData = {
-                                  "username": "slim",
+                                  "username": "user",
                                   "email": _email2.text,
+                                  "fullname": _prenom2.text,
+                                  "telephone": _tel.text.replaceAll(" ", ''),
+                                  "date_naissance": birthInput.text,
                                   "password": _pass.text,
                                 };
                                 await networkHandler.post(
@@ -232,5 +337,21 @@ class _EdituserState extends State<Edituser> {
                     ]))
               ]))),
     );
+  }
+  calculateAge(DateTime birthDate) {
+    DateTime currentDate = DateTime.now();
+    int age = currentDate.year - birthDate.year;
+    int month1 = currentDate.month;
+    int month2 = birthDate.month;
+    if (month2 > month1) {
+      age--;
+    } else if (month1 == month2) {
+      int day1 = currentDate.day;
+      int day2 = birthDate.day;
+      if (day2 > day1) {
+        age--;
+      }
+    }
+    return age;
   }
 }

@@ -7,11 +7,16 @@ const router = express.Router();
 const auth = require("../middleware/auth");
 const UpdateUser = asyncHandler(async (req, res) => {
   
-    const user = await User.findOneAndUpdate(req.body.username);
+    const user = await User.findOneAndUpdate(req.body.fullname);
   
     if (user) {
       
       user.email = req.body.email || user.email;
+      user.fullname= req.body.fullname || user.fullname;
+      user.telephone=req.body.telephone || user.telephone;
+      user.date_naissance= req.body.date_naissance|| user.date_naissance;
+      user.adresse="la marsa";
+
       
     
       user.password = req.body.password;
@@ -20,10 +25,12 @@ const UpdateUser = asyncHandler(async (req, res) => {
       const updatedUser = await user.save();
   
       res.json({
-        username: updatedUser.username,
-        password:updatedUser.password,
         
+        fullname: updatedUser.fullname,
+        password:updatedUser.password,
         email: updatedUser.email,
+        telephone :updatedUser.telephone,
+
        
         
       });

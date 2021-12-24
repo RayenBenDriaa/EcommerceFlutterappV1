@@ -12,10 +12,15 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
+  static final ValueNotifier<ThemeMode> themeNotifier =
+      ValueNotifier(ThemeMode.light);
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    return ValueListenableBuilder<ThemeMode>(
+        valueListenable: themeNotifier,
+        builder: (_, ThemeMode currentMode, __) {
     return MaterialApp(
       builder: (context, widget) => ResponsiveWrapper.builder(
         ClampingScrollWrapper.builder(context, widget!),
@@ -29,20 +34,55 @@ class MyApp extends StatelessWidget {
           ResponsiveBreakpoint.resize(350, name: DESKTOP),
         ],
       ),
+      
       title: 'Ecommerce',
+      theme: ThemeData(primarySwatch: Colors.amber),
+            darkTheme: ThemeData.dark(),
+            themeMode: currentMode,
+            home: HomeScreen(),
       debugShowCheckedModeBanner: false,
       routes: {
-        "/": (BuildContext context) {
-          return const Signin();
-        },
+        
         "/signup": (BuildContext context) {
           return const Signup();
         },
-        // "/editUser": (BuildContext context) {
-        //   return const Edituser();
-        // },
-        '/editUser': (context) => const Edituser(),
-      },
+       
+         "/edituser": (BuildContext context) {
+                return const Edituser();
+              },
+            },
+          );
+        });
+  }
+}
+
+class HomeScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Kindacode.com'),
+        actions: [
+          IconButton(
+              icon: Icon(MyApp.themeNotifier.value == ThemeMode.light
+                  ? Icons.dark_mode
+                  : Icons.light_mode),
+              onPressed: () {
+                MyApp.themeNotifier.value =
+                    MyApp.themeNotifier.value == ThemeMode.light
+                        ? ThemeMode.dark
+                        : ThemeMode.light;
+              })
+        ],
+      ),
+      body: Center(
+        child: ElevatedButton(
+          child: Text('Go to Other Screen'),
+          onPressed: () {
+            Navigator.pushNamed(context, "/signup");
+          },
+        ),
+      ),
     );
   }
 }
