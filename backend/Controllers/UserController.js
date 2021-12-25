@@ -11,8 +11,10 @@ const messages = require('../common/common_messages/return_messages')
 //const bcrypt = require('bcrypt');
 
 const UpdateUser = asyncHandler(async (req, res) => {
+    const {username} = req.body;
   
-    const user = await User.findOneAndUpdate(req.body.fullname);
+    let user = await User.findOne({username});
+    
   
     if (user) {
       
