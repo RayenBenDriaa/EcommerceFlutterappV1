@@ -36,7 +36,11 @@ const UserSchema = mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now()
-  } 
+  },
+  role: {
+    type: String,
+    default: "Utilisateur"
+  }
 });
 
 // export model user with UserSchema

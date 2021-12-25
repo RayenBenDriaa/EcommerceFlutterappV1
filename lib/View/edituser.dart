@@ -10,19 +10,19 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import '../NetworkHandler.dart';
 
 class Edituser extends StatefulWidget {
-  const Edituser({Key? key}) : super(key: key);
+  const Edituser({Key key}) : super(key: key);
 
   @override
   State<Edituser> createState() => _EdituserState();
 }
 
 class _EdituserState extends State<Edituser> {
-  late String? _nom;
-  late String? _email;
-  late String? _password;
-  late String? _prenom;
-  late String? _numtel;
-  late String? _repeatPassword;
+   String _nom;
+   String _email;
+   String _password;
+   String _prenom;
+   String _numtel;
+   String _repeatPassword;
   final GlobalKey<FormState> _keyForm = GlobalKey<FormState>();
   final TextEditingController _pass = TextEditingController();
   final TextEditingController _confirmPass = TextEditingController();
@@ -31,6 +31,7 @@ class _EdituserState extends State<Edituser> {
   final TextEditingController _nom2 = TextEditingController();
   final TextEditingController _email2 = TextEditingController();
   final TextEditingController _prenom2 = TextEditingController();
+  final TextEditingController _addresse2 = TextEditingController();
   final TextEditingController _numtel2 = TextEditingController();
    final TextEditingController birthInput = TextEditingController();
   final TextEditingController _tel = TextEditingController();
@@ -40,8 +41,9 @@ class _EdituserState extends State<Edituser> {
 
   @override
   Widget build(BuildContext context) {
+    
     double width = MediaQuery.of(context).size.width;
-    int? age;
+    int age;
     DateTime date = DateTime.now();
     // Figma Flutter Generator PrincipalctaWidget - INSTANCE
     return Container(
@@ -97,10 +99,10 @@ class _EdituserState extends State<Edituser> {
                             prefixIcon: const Icon(Icons.email),
                             fillColor: Colors.white,
                             ),
-                          onSaved: (String? value) {
+                          onSaved: (String value) {
                             _email = value;
                           },
-                          validator: (String? value) {
+                          validator: (String value) {
                             String pattern =
                                 r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
                             if (value == null || value.isEmpty) {
@@ -128,7 +130,7 @@ class _EdituserState extends State<Edituser> {
                                     color: HexColor("#FF8000"), width: 1.0)),
                           ),
                           validator: (value) {
-                            if (value!.isEmpty) {
+                            if (value.isEmpty) {
                               return "Veuillez renseigner votre nom et prénom.";
                             } else {
                               return null;
@@ -153,10 +155,33 @@ class _EdituserState extends State<Edituser> {
                                     color: HexColor("#FF8000"), width: 1.0)),
                           ),
                           validator: (value) {
-                            if (value!.isEmpty) {
+                            if (value.isEmpty) {
                               return "Veuillez renseigner votre numéro de téléphone.";
                             } else if (value.replaceAll(' ', '').length != 8) {
                               return "Veuillez renseigner un numéro de téléphone valide";
+                            } else {
+                              return null;
+                            }
+                          },
+                        ),
+                      ),
+                      Container(
+              width: width,
+                        height: 65,
+                        margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
+                        child: TextFormField(
+                          controller: _addresse2,
+                          decoration: InputDecoration(
+                            border: const OutlineInputBorder(),
+                            hintText: 'Modifier votre  adresse',
+                            prefixIcon: const Icon(Icons.home_outlined),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: HexColor("#FF8000"), width: 1.0)),
+                          ),
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return "Veuillez renseigner votre  adresse";
                             } else {
                               return null;
                             }
@@ -179,7 +204,7 @@ class _EdituserState extends State<Edituser> {
                           ),
                           readOnly: true,
                           onTap: () async {
-                            DateTime? pickedDate = await showDatePicker(
+                            DateTime pickedDate = await showDatePicker(
                               context: context,
                               initialDate: DateTime.now(),
                               firstDate: DateTime(1900),
@@ -199,12 +224,12 @@ class _EdituserState extends State<Edituser> {
                             }
                           },
                           validator: (value) {
-                  if (value!.isEmpty) {
+                  if (value.isEmpty) {
                               return "Veuillez renseigner votre date de naissance.";
                             } else {
                               age = calculateAge(date);
                               print(age);
-                              if (age! < 18) {
+                              if (age < 18) {
                                 return "Vous devez être agé de minimum 18ans pour créer un compte";
                               } else {
                                 return null;
@@ -229,7 +254,7 @@ class _EdituserState extends State<Edituser> {
                                     color: HexColor("#FF8000"), width: 1.0)),
                           ),
                               
-                          onSaved: (String? value) {
+                          onSaved: (String value) {
                             _password = value;
                           },
                           validator: (value) {
@@ -256,7 +281,7 @@ class _EdituserState extends State<Edituser> {
                                 borderSide: BorderSide(
                                     color: HexColor("#FF8000"), width: 1.0)),
                           ),
-                          onSaved: (String? value) {
+                          onSaved: (String value) {
                             _repeatPassword = value;
                           },
                           validator: (value) {
@@ -279,12 +304,13 @@ class _EdituserState extends State<Edituser> {
                             width: double.infinity,
                             child: ElevatedButton(
                               onPressed: () async {
-                                _keyForm.currentState!.save();
+                                _keyForm.currentState.save();
 
                                 Map<String, String> userData = {
                                   "username": "user",
                                   "email": _email2.text,
                                   "fullname": _prenom2.text,
+                                  "adresse": _addresse2.text,
                                   "telephone": _tel.text.replaceAll(" ", ''),
                                   "date_naissance": birthInput.text,
                                   "password": _pass.text,
@@ -334,6 +360,27 @@ class _EdituserState extends State<Edituser> {
                               ),
                             )),
                       ),
+                      Container(
+                        margin: const EdgeInsets.fromLTRB(0, 20, 0, 50),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            GestureDetector(
+                              child: Text("Go back",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w900,
+                                      color: HexColor("#FF8000"),
+                                      fontSize: 16)),
+                              onTap: () {
+                                FocusScope.of(context)
+                                    .requestFocus(FocusNode());
+                                Navigator.pushReplacementNamed(
+                                    context, "/profile");
+                              },
+                            )
+                          ],
+                        ),
+                      )
                     ]))
               ]))),
     );
