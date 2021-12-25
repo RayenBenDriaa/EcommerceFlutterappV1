@@ -42,6 +42,10 @@ class MyApp extends StatelessWidget {
             home: HomeScreen(),
       debugShowCheckedModeBanner: false,
       routes: {
+         "/signin": (BuildContext context) {
+                return const Signin();
+              },
+
         
         "/signup": (BuildContext context) {
           return const Signup();

@@ -520,6 +520,7 @@ class _SignupState extends State<Signup> {
                     onTap: () {
                       FocusScope.of(context).requestFocus(FocusNode());
                       print("Sign In");
+                      Navigator.pushNamed(context, "/signin");
                     },
                   )
                 ],
