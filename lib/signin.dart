@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'NetworkHandler.dart';
-import "View/edituser.dart";
 
 class Signin extends StatefulWidget {
   const Signin({Key key}) : super(key: key);
@@ -12,22 +12,22 @@ class Signin extends StatefulWidget {
 }
 
 class _SigninState extends State<Signin> {
-   String _email = "";
-   String _password = "";
-
+  String _email;
+  String _password;
   final GlobalKey<FormState> _keyForm = GlobalKey<FormState>();
+
   NetworkHandler networkHandler = NetworkHandler();
   final TextEditingController _email2 = TextEditingController();
   final TextEditingController _password2 = TextEditingController();
 
-  final String _baseUrl = "http://192.168.1.2:4000";
+  final String _baseUrl = "192.168.1.2:4000";
+
   @override
   Widget _buildLogoButton({
-     String image,
-     VoidCallback onPressed,
+    String image,
+    VoidCallback onPressed,
   }) {
     return FloatingActionButton(
-      heroTag: "image",
       backgroundColor: Colors.white,
       onPressed: onPressed,
       child: SizedBox(
@@ -131,7 +131,7 @@ class _SigninState extends State<Signin> {
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: 'Enter your Email',
-                  prefixIcon: Icon(Icons.email, color: Colors.grey),
+                  prefixIcon: Icon(Icons.email),
                   focusedBorder: OutlineInputBorder(
                     borderSide:
                         BorderSide(color: Color(0xFFEF6C00), width: 2.0),
@@ -161,7 +161,7 @@ class _SigninState extends State<Signin> {
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: 'Enter your Password',
-                  prefixIcon: Icon(Icons.lock, color: Colors.grey),
+                  prefixIcon: Icon(Icons.lock),
                   focusedBorder: OutlineInputBorder(
                     borderSide:
                         BorderSide(color: Color(0xFFEF6C00), width: 2.0),
@@ -195,52 +195,56 @@ class _SigninState extends State<Signin> {
                     shadowColor: Colors.orange,
                     elevation: 10.0, //buttons Material shadow
                   ),
-                  onPressed: () async {
+                  onPressed: () {
+                    print("jhkjkjkjhkjhkjh");
                     if (_keyForm.currentState.validate()) {
                       _keyForm.currentState.save();
-
-                      Map<String, String> userData = {
+                      print('okpo');
+                      Map<String, dynamic> userData = {
                         "email": _email2.text,
                         "password": _password2.text
                       };
-                      await networkHandler.post("/user/login", userData);
 
-                      // Map<String, String> headers = {
-                      //   "Content-Type": "application/json; charset=UTF-8"
-                      // };
+                      Map<String, String> headers = {
+                        "Content-Type": "application/json; charset=UTF-8"
+                      };
 
-                      // http
-                      //     .post(Uri.http(_baseUrl, "/user/login"),
-                      //         headers: headers, body: json.encode(userData))
-                      //     .then((http.Response response) {
-                      //   if (response.statusCode == 200) {
-                      //     Map<String, dynamic> userFromServer =
-                      //         json.decode(response.body);
-                      //     print(userFromServer["token"]);
+                      http
+                          .post(Uri.http(_baseUrl, "/user/login"),
+                              headers: headers, body: json.encode(userData))
+                          .then((http.Response response) async {
+                        if (response.statusCode == 200) {
+                          Map<String, dynamic> userFromServer =
+                              json.decode(response.body);
+                          SharedPreferences prefs =
+                              await SharedPreferences.getInstance();
+                          prefs.setString("email", _email);
+                          prefs.setString("token", userFromServer["token"]);
 
-                      //     Navigator.pushReplacementNamed(context, "/signup");
-                      //   } else if (response.statusCode == 401) {
-                      //     showDialog(
-                      //         context: context,
-                      //         builder: (BuildContext context) {
-                      //           return const AlertDialog(
-                      //             title: Text("Information"),
-                      //             content: Text(
-                      //                 "Username et/ou mot de passe incorrect"),
-                      //           );
-                      //         });
-                      //   } else {
-                      //     showDialog(
-                      //         context: context,
-                      //         builder: (BuildContext context) {
-                      //           return const AlertDialog(
-                      //             title: Text("Information"),
-                      //             content: Text(
-                      //                 "Une erreur s'est produite. Veuillez réessayer !"),
-                      //           );
-                      //         });
-                      //   }
-                      // });
+                          Navigator.pushReplacementNamed(context, "/navbar");
+                          print(userFromServer["token"]);
+                        } else if (response.statusCode == 401) {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return const AlertDialog(
+                                  title: Text("Information"),
+                                  content: Text(
+                                      "Username et/ou mot de passe incorrect"),
+                                );
+                              });
+                        } else {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return const AlertDialog(
+                                  title: Text("Information"),
+                                  content: Text(
+                                      "Une erreur s'est produite. Veuillez réessayer !"),
+                                );
+                              });
+                        }
+                      });
                     }
                   },
                 )),
@@ -298,20 +302,7 @@ class _SigninState extends State<Signin> {
                         style: TextStyle(
                             fontWeight: FontWeight.w900, color: Colors.orange)),
                     onTap: () {
-                      Future.delayed(Duration.zero, () async {
-                        await Future.delayed(const Duration(milliseconds: 100));
-                        Navigator.pushNamed(context, "/login");
-                      });
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //       builder: (context) => const Edituser()),
-                      // );
-                      // Navigator.push(context,
-                      //     MaterialPageRoute(builder: (context) {
-                      //   return const Edituser();
-                      // }));
-                      // Navigator.pushNamed(context, "/editUser");
+                      Navigator.pushNamed(context, "/signup");
                     },
                   )
                 ],
@@ -331,7 +322,7 @@ class _SigninState extends State<Signin> {
                         style: TextStyle(
                             fontWeight: FontWeight.w900, color: Colors.orange)),
                     onTap: () {
-                      Navigator.pushReplacementNamed(context, "/signup");
+                      Navigator.pushNamed(context, "/signup");
                     },
                   )
                 ],
