@@ -8,6 +8,7 @@ const auth = require("../middleware/auth");
 const User = require("../model/User");
 const {UpdateUser } = require("../Controllers/UserController");
 const {forgetPassword } = require("../Controllers/UserController");
+const {DeleteUser } = require("../Controllers/UserController");
 
 /**
  * @method - POST
@@ -206,6 +207,7 @@ router.get("/me", auth, async (req, res) => {
 
 router.post("/editUser",UpdateUser);
 
+router.delete("/deleteUser/:email",DeleteUser);
 
 router.post('/forgetPassword/:email',forgetPassword)
 

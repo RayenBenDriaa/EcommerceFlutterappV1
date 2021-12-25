@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -6,6 +7,7 @@ import 'package:internal/shared/badge.dart';
 import 'package:internal/shared/notifications.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -25,8 +27,8 @@ class _ProfileState extends State<Profile> with AutomaticKeepAliveClientMixin {
   String date_naissance = "eee";
   int telephone = 0;
 
-  // final String _baseUrl = "127.0.0.1:4000"; //Slim
-  final String _baseUrl = "192.168.1.2:4000"; //Sana
+   final String _baseUrl = "10.0.2.2:4000"; //Slim
+  //final String _baseUrl = "192.168.1.2:4000"; //Sana
 
   Future<bool> fetchedDocs;
 
@@ -72,6 +74,32 @@ class _ProfileState extends State<Profile> with AutomaticKeepAliveClientMixin {
         future: fetchedDocs,
         builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
           return Scaffold(
+            floatingActionButton: FloatingActionButton.extended(
+              onPressed: () {
+                Future<Map<String, dynamic>> commonDel() async {
+                  HttpClient httpClient = new HttpClient();
+                  HttpClientRequest request =  await  httpClient.deleteUrl(Uri.parse(
+                      "http://10.0.2.2:4000/user/deleteUser/"+email)) ;
+                  print(email);
+                  request.headers.set('content-type', 'application/json');
+                  //request.add(utf8.encode(json.encode(null)));
+                  HttpClientResponse response = await request.close();
+                  String statusCode = response.statusCode.toString();
+                  String reply = await response.transform(utf8.decoder).join();
+
+                  print(reply);
+                  if(statusCode == "200"){
+                    print("done");
+                    Navigator.of(context).pushNamed("/signin");
+                  }
+                  httpClient.close();
+                }
+                commonDel();
+              },
+              label: const Text('Delete'),
+              icon: const Icon(Icons.delete),
+              backgroundColor: Colors.orange,
+            ),
             appBar: AppBar(
               backgroundColor: Colors.white,
               leading: IconButton(
@@ -94,6 +122,7 @@ class _ProfileState extends State<Profile> with AutomaticKeepAliveClientMixin {
 
                     ),
               ),
+
               elevation: 0.0,
               actions: <Widget>[
                 IconButton(
@@ -112,6 +141,7 @@ class _ProfileState extends State<Profile> with AutomaticKeepAliveClientMixin {
                   },
                   tooltip: "Shopping Card",
                 ),
+
               ],
             ),
             body: Padding(

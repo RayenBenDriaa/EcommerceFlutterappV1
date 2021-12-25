@@ -38,6 +38,18 @@ const UpdateUser = asyncHandler(async (req, res) => {
     }
   });
 
+const DeleteUser = asyncHandler(async (req, res) => {
+
+    const user = await User.remove({email: req.params.email});
+    console.log(req.params.email);
+    if (user) {
+        res.sendStatus(200);
+    } else {
+        res.sendStatus(404);
+        throw new Error("User Not Found");
+    }
+});
+
 //  generate && send new password
 const forgetPassword = async (req, res) => {
     const user = await User.findOne({ email: req.params.email })
@@ -77,4 +89,4 @@ const forgetPassword = async (req, res) => {
 }
 
 
-  module.exports = {UpdateUser,forgetPassword};
+  module.exports = {UpdateUser,forgetPassword,DeleteUser};
