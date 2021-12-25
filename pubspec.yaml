@@ -45,6 +45,8 @@ dependencies:
   flutter_lints: ^1.0.0
   get_it: ^5.0.1
   provider: ^4.3.2+2
+  shared_preferences: ^2.0.8
+
 
 
 dev_dependencies:

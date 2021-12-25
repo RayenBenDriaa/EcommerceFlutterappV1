@@ -2,8 +2,10 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:internal/View/login_page.dart';
+import 'package:internal/View/profile.dart';
 import 'package:internal/core/states/request_state.dart';
 import 'package:internal/locator.dart';
+import 'package:internal/shared/splash_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -11,7 +13,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'View/edituser.dart';
 import 'signin.dart';
 import 'View/signup.dart';
-import 'View/parametres.dart';
+import 'View/navBar.dart';
 
 void main() {
   setupLocator();
@@ -47,7 +49,7 @@ class MyApp extends StatelessWidget {
       // supportedLocales: ln10.all,
       routes: {
         "/": (BuildContext context) {
-          return const Parametres();
+          return const SpalshScreen();
         },
         "/signin": (BuildContext context) {
           return const Signin();
@@ -58,8 +60,11 @@ class MyApp extends StatelessWidget {
         "/editUser": (BuildContext context) {
           return const Edituser();
         },
-        "/parametres": (BuildContext context) {
-          return const Parametres();
+        "/profile": (BuildContext context) {
+          return Profile();
+        },
+        "/navbar": (BuildContext context) {
+          return NavBar();
         },
         "/login": (BuildContext context) {
           return MultiProvider(
