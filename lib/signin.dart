@@ -20,7 +20,7 @@ class _SigninState extends State<Signin> {
   final TextEditingController _email2 = TextEditingController();
   final TextEditingController _password2 = TextEditingController();
 
-  final String _baseUrl = "192.168.1.2:4000";
+  final String _baseUrl = "127.0.0.1:4000";
 
   @override
   Widget _buildLogoButton({
@@ -173,7 +173,7 @@ class _SigninState extends State<Signin> {
                 validator: (String value) {
                   if (value == null || value.isEmpty) {
                     return "Le mot de passe ne doit pas etre vide";
-                  } else if (value.length < 4) {
+                  } else if (value.length < 2) {
                     return "Le mot de passe doit avoir au moins 4 caractères";
                   } else {
                     return null;
@@ -196,10 +196,8 @@ class _SigninState extends State<Signin> {
                     elevation: 10.0, //buttons Material shadow
                   ),
                   onPressed: () {
-                    print("jhkjkjkjhkjhkjh");
                     if (_keyForm.currentState.validate()) {
                       _keyForm.currentState.save();
-                      print('okpo');
                       Map<String, dynamic> userData = {
                         "email": _email2.text,
                         "password": _password2.text
@@ -302,7 +300,8 @@ class _SigninState extends State<Signin> {
                         style: TextStyle(
                             fontWeight: FontWeight.w900, color: Colors.orange)),
                     onTap: () {
-                      Navigator.pushNamed(context, "/signup");
+                      //Navigator.pushNamed(context, "/signup");
+                        Navigator.pushNamed(context, "/login");
                     },
                   )
                 ],

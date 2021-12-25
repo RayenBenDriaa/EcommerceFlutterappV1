@@ -45,80 +45,80 @@ class _LoginPageState extends State<LoginPage> with FormValidation {
           builder: (context, requestState, widget) => requestState.isFetching
               ? Center(child: CircularProgressIndicator())
               : Container(
-                  padding: const EdgeInsets.all(100),
-                  alignment: Alignment.center,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                          'assets/images/Icon.png',
-                          width: 80,
-                          height: 80,
-                          fit:BoxFit.contain
-                      ),
-                      const SizedBox(height: 15),
-                      forgetPassword(requestState),
-                      const SizedBox(height: 15),
-                    ],
-                  ),
+            padding: const EdgeInsets.all(100),
+            alignment: Alignment.center,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(
+                    'assets/images/Icon.png',
+                    width: 80,
+                    height: 80,
+                    fit:BoxFit.contain
                 ),
+                const SizedBox(height: 15),
+                forgetPassword(requestState),
+                const SizedBox(height: 15),
+              ],
+            ),
+          ),
         ),
       ),
     );
   }
 
   Widget get appbar => AppBar(
-        title: Text(
-          "Password Reset with email",
-          style: Styles.instance.snackbarTitleStyle,
-        ),
-        backgroundColor: Color(0xFFFF8000),
-        centerTitle: true,
-      );
+    title: Text(
+      "Password Reset with email",
+      style: Styles.instance.snackbarTitleStyle,
+    ),
+    backgroundColor: Color(0xFFFF8000),
+    centerTitle: true,
+  );
 
   Widget forgetPassword(RequestState requestState) => DefaultOutlineButton(
-        onPressed: () {
-          CustomShowDialog.instance.showFormDialog(
-              context,
-              requestState,
-              ForgetPassword(
-                  screenHeight: screenHeight,
-                  emailController: _emailController,
-                  formKey: _formKey), acceptButton: () async {
-            if (_formKey.currentState.validate()) {
+    onPressed: () {
+      CustomShowDialog.instance.showFormDialog(
+          context,
+          requestState,
+          ForgetPassword(
+              screenHeight: screenHeight,
+              emailController: _emailController,
+              formKey: _formKey), acceptButton: () async {
+        if (_formKey.currentState.validate()) {
 
-              _formKey.currentState.save();
-              Future.delayed(Duration.zero, () async {
-                await Future.delayed(const Duration(milliseconds: 100));
-                Navigator.pushNamed(context, "/login");
-              });
-              //Navigator.of(context).pop();
-              await apiService
-                  .forgetPassword(_emailController.text)
-                  .then((value) {
-                showSnackbarMessage(value.message, value.ok ? true : false);
-                _emailController.clear();
-              });
-            }
+          _formKey.currentState.save();
+          Future.delayed(Duration.zero, () async {
+            await Future.delayed(const Duration(milliseconds: 100));
+            Navigator.pushNamed(context, "/login");
           });
-        },
-        buttonLabel: 'Reset with mail',
-        height: screenHeight * 0.09,
-        width: double.infinity,
-        textStyle: Styles.instance.defaultButtonTextStyle,
+          //Navigator.of(context).pop();
+          await apiService
+              .forgetPassword(_emailController.text)
+              .then((value) {
+            showSnackbarMessage(value.message, value.ok ? true : false);
+            _emailController.clear();
+          });
+        }
+      });
+    },
+    buttonLabel: 'Reset with mail',
+    height: screenHeight * 0.09,
+    width: double.infinity,
+    textStyle: Styles.instance.defaultButtonTextStyle,
     icon: Icon(
-          Icons.alternate_email,
-          color: Styles.instance.defaultPrefixIconColor,
-          size: Styles.instance.defaultPrefixIconSize,
-        ),
-      );
+      Icons.alternate_email,
+      color: Styles.instance.defaultPrefixIconColor,
+      size: Styles.instance.defaultPrefixIconSize,
+    ),
+  );
 
   showSnackbarMessage(String message, bool isSuccess) {
     _scaffoldKey.currentState.showSnackBar(SnackBar(
       behavior: SnackBarBehavior.floating,
       content: CustomMessageDialog.instance.showMessageDialog(
-      context: context, isSuccess: isSuccess, message: message),
+          context: context, isSuccess: isSuccess, message: message),
       duration: Duration(milliseconds: Styles.instance.snackbarMessageDuration),
     ));
   }

@@ -16,7 +16,7 @@ class ApiService {
   //  make a request to get new password
   Future<ResponseModel> forgetPassword(String mail) async {
     response = null;
-    String body = '{"mail" : "$mail"}';
+    String body = '{"email" : "$mail"}';
     try {
 
       requestState.makeStateBusy();
