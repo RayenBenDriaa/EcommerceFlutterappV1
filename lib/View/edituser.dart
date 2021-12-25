@@ -49,7 +49,7 @@ class _EdituserState extends State<Edituser> {
     return Container(
       decoration: const BoxDecoration(),
       child: Scaffold(
-          backgroundColor: Colors.white,
+          
           body: Form(
               key: _keyForm,
               child: ListView(children: [
@@ -374,8 +374,7 @@ class _EdituserState extends State<Edituser> {
                               onTap: () {
                                 FocusScope.of(context)
                                     .requestFocus(FocusNode());
-                                Navigator.pushReplacementNamed(
-                                    context, "/profile");
+                                Navigator.pushNamed(context, "/navbar");
                               },
                             )
                           ],
