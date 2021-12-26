@@ -218,6 +218,9 @@ class _SigninState extends State<Signin> {
                               await SharedPreferences.getInstance();
                           prefs.setString("email", _email);
                           prefs.setString("token", userFromServer["token"]);
+                          prefs.setString(
+                              "username", userFromServer["username"]);
+
 
                           Navigator.pushReplacementNamed(context, "/navbar");
                           print(userFromServer["token"]);
