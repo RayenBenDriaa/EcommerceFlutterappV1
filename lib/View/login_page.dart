@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:internal/View/forget_password.dart';
+import 'package:internal/View/signin.dart';
 import '/core/mixin/form_validator.dart';
 import '/core/models/user_model.dart';
 import '/core/reusable_widgets/message_dialog.dart';
@@ -91,14 +92,14 @@ class _LoginPageState extends State<LoginPage> with FormValidation {
           _formKey.currentState.save();
           Future.delayed(Duration.zero, () async {
             await Future.delayed(const Duration(milliseconds: 100));
-            Navigator.pushNamed(context, "/login");
+            Navigator.of(context).pushNamed("/login");
           });
           //Navigator.of(context).pop();
           await apiService
               .forgetPassword(_emailController.text)
               .then((value) {
             showSnackbarMessage(value.message, value.ok ? true : false);
-            _emailController.clear();
+            //_emailController.clear();
           });
         }
       });

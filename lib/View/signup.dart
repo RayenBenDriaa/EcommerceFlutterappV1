@@ -1,9 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 // import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../NetworkHandler.dart';
+
 
 class Signup extends StatefulWidget {
   const Signup({Key key}) : super(key: key);
@@ -484,7 +488,21 @@ class _SignupState extends State<Signup> {
                             "password": _password.text
                           };
                           print(data);
-                          await networkHandler.post("/user/signup", data);
+                          await  networkHandler.post("/user/signup", data)
+                              .then((response) async {
+                      if (response.statusCode == 200 || response.statusCode == 201) {
+                        Map<String, dynamic> userFromServer =
+                        json.decode(response.body);
+                        SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
+                        prefs.setString("email", _email.text);
+                        prefs.setString("username", _username.text);
+                        prefs.setString("token", userFromServer["token"]);
+                        Navigator.pushNamed(context, "/navbar");
+                      }
+                      });
+
+
                           setState(() {
                             circular = false;
                           });

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'NetworkHandler.dart';
+import '../NetworkHandler.dart';
 
 class Signin extends StatefulWidget {
   const Signin({Key key}) : super(key: key);
@@ -220,6 +220,7 @@ class _SigninState extends State<Signin> {
                           prefs.setString("token", userFromServer["token"]);
                           prefs.setString(
                               "username", userFromServer["username"]);
+
 
 
                           Navigator.pushReplacementNamed(context, "/navbar");

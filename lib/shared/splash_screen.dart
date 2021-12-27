@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:internal/View/profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../signin.dart';
+import '../View/signin.dart';
 
 
 class SpalshScreen extends StatefulWidget {

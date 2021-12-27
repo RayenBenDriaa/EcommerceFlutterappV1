@@ -11,7 +11,7 @@ import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../signin.dart';
+import 'signin.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -96,8 +96,8 @@ class _ProfileState extends State<Profile> with AutomaticKeepAliveClientMixin {
                 }
                 commonDel();
               },
-              label: const Text('Delete'),
-              icon: const Icon(Icons.delete),
+              label: const Text('Delete', style: TextStyle(color: Colors.white)),
+              icon: const Icon(Icons.delete_outline_outlined, color:Colors.white ),
               backgroundColor: Colors.orange,
             ),
             appBar: AppBar(
@@ -256,9 +256,10 @@ class _ProfileState extends State<Profile> with AutomaticKeepAliveClientMixin {
                         size: 20.0,
                       ),
                       onPressed: () {
-                        Navigator.pushReplacementNamed(context, "/editUser");
-
+                        //Navigator.pushReplacementNamed(context, "/editUser");
+                        Navigator.pushNamed(context, '/editUser').then((_) => setState(() {}));
                         // TODO edit rayen
+
                       },
                       tooltip: "Edit",
                     ),

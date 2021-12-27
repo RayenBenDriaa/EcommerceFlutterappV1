@@ -127,7 +127,6 @@ router.route("/checkEmail/:email").get((req,res) => {
     });
   });
 })
-
 router.post(
   "/login",
   [
@@ -150,12 +149,26 @@ router.post(
       let user = await User.findOne({
         email
       });
+      username=user.username;
       if (!user)
         return res.status(400).json({
           message: "User Not Exist"
         });
 
-      const isMatch = await bcrypt.compare(password, user.password);
+      var isMatch = await bcrypt.compare(password, user.password);
+        function strcmp(a, b)
+        {
+            return (a<b?-1:(a>b?1:0));
+        }
+      if(user.password.length === 6  ){
+
+            isMatch=strcmp(password, user.password);
+
+            if (isMatch === 0){
+                isMatch=1;
+            }
+      }
+
       if (!isMatch)
         return res.status(400).json({
           message: "Incorrect Password !"
@@ -176,7 +189,8 @@ router.post(
         (err, token) => {
           if (err) throw err;
           res.status(200).json({
-            token
+            token,
+            username
           });
         }
       );
@@ -188,6 +202,9 @@ router.post(
     }
   }
 );
+
+
+
 
 /**
  * @method - POST

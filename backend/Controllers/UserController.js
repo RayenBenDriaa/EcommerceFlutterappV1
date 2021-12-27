@@ -11,26 +11,38 @@ const messages = require('../common/common_messages/return_messages')
 //const bcrypt = require('bcrypt');
 
 const UpdateUser = asyncHandler(async (req, res) => {
-  
-    const user = await User.findOneAndUpdate(req.body.username);
-  
+    const {username} = req.body;
+
+    let user = await User.findOne({username});
+
+
     if (user) {
-      
+
       user.email = req.body.email || user.email;
-      
-    
-      user.password = req.body.password;
-      
-  
+      user.fullname= req.body.fullname || user.fullname;
+      user.telephone=req.body.telephone || user.telephone;
+      user.date_naissance= req.body.date_naissance|| user.date_naissance;
+      user.adresse=req.body.adresse|| user.adresse;
+      const salt = await bcrypt.genSalt(10);
+      const pwd =req.body.password;
+      user.password = await bcrypt.hash(pwd, salt);
+
+
+
+
+
+
       const updatedUser = await user.save();
-  
+
       res.json({
-        username: updatedUser.username,
+
+        fullname: updatedUser.fullname,
         password:updatedUser.password,
-        
         email: updatedUser.email,
-       
-        
+        telephone :updatedUser.telephone,
+
+
+
       });
     } else {
       res.status(404);
